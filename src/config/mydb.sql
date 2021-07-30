@@ -8,6 +8,7 @@ CREATE TABLE BOARDGAMES (
     Category VARCHAR(2) NOT NULL,
 	Description VARCHAR(200),
 	Year VARCHAR(4),
+    Favorites boolean,
     PRIMARY KEY(ID)
 );
 
