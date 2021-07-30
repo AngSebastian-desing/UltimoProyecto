@@ -1,39 +1,35 @@
 <template>
-  <div class="home">
-    <h1>BoardGames</h1>
-    <b-button to="/agregar" variant="success" class="m-3">Agregar</b-button>
-    <Tabla :items="boardgames" :busy="loading" :fields="fields">
+  <div>
 
-     <template slot="actions" slot-scope="{item}">
-          <b-button :to="`/editar/${item.ID}`" class="mx-1" variant="warning">Editar</b-button>
-          <b-button @click="eliminar(item.ID)" variant="danger" class="mx-1">Eliminar</b-button>
-      </template>
-    </Tabla>
+      <h1>Visualizar todos los boardgames</h1>
+      <br>
+      <Tarjeta  
+      class="tarjeta"   
+      v-for="v in boardgames"
+      :key="v.ID"
+      :ID="v.ID"
+      :Name="v.Name"
+      :Publisher="v.Publisher"
+      :Year="v.Year"
+      >
+    </Tarjeta>
+
   </div>
 </template>
 
 <script>
-import Tabla from '../components/Tabla.vue'
+import Tarjeta from '../components/Tarjeta.vue'
 import {mapState, mapActions} from 'vuex'
 export default {
-  name: 'Home',
+  name: 'Visualizar',
   components: {
-    Tabla
+    Tarjeta
   },
   data(){
     return{
       fields:[
-        {key:'ID', label: 'Clave'},
         {key:'Name', label: 'Nombre'},
         {key:'Publisher', label: 'Editor'},
-        {key:'Category', label: 'Categoría'},
-        {
-          key:'Description', 
-          label: 'Descripción',
-          formatter: value => {
-            return value || "(Sin descripción)"
-          }
-        },
         {
           key:'Year', 
           label: 'Año',
@@ -41,8 +37,7 @@ export default {
             return value || "-"
           }
         },
-        'acciones'
-
+        
       ]
     }
   },
@@ -87,3 +82,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.tarjeta{
+  text-align: center;
+  margin: 0 80px 0 80px;
+  padding: 0 80px 0 80px;
+}
+
+
+</style>

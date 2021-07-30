@@ -1,6 +1,8 @@
 <template>
   <div>
       <h1>Editar Boardgame</h1>
+      <br>
+      <hr>
       <form @submit.prevent="guardarBoardGame()">
             <Input v-model="boardgame.ID" titulo="Clave" class="mx-4" id="ID" disabled />
             
@@ -12,6 +14,7 @@
                 placeholder="Ingrese el nombre"
                 :maxlength="80"
                 mensajeError="Es necesario ingresar un nombre"
+                disabled
                 :error="erroresValidacion && !validacionNombre"
             />
 
@@ -26,17 +29,14 @@
                 :error="erroresValidacion && !validacionNombre"
             />
 
-            <Input
-                v-model="boardgame.Category"
-                titulo="Categoría"
-                class="mx-4"
-                id="nombre"
-                type="text"
-                placeholder="Ingrese la categoría"
-                :maxlength="2"
-                mensajeError="Es necesario ingresar una categoría"
-                :error="erroresValidacion && !validacionNombre"
-            />
+            <div class="select">Categoría <strong>{{ selected }}</strong></div>
+              <b-form-select 
+              v-model="boardgame.Category" 
+              :options="options" 
+              class="select"
+              mensajeError="Es necesario ingresar una categoría"
+              :error="erroresValidacion && !validacionNombre">
+              </b-form-select>
 
             <Input
                 v-model="boardgame.Description"
@@ -51,12 +51,14 @@
                 titulo="Año"
                 class="mx-4"
                 id="Year"
-                type="numeric"
+                pattern="[0-9]+"
+                type="number"
                 placeholder="Ingrese el año de lanzamiento"
                 :maxlength="4"
             />
 
             <b-button type="submit" variant="primary" class="m-4">Guardar</b-button>
+        <hr>
         </form>
   </div>
 </template>
@@ -72,6 +74,15 @@ export default {
   data() {
     return {
       boardgame: {},
+      selected: null,
+        options: [
+          { value: null, text: 'Seleccionar categoría' },
+          { value: '11', text: 'Adventure' },
+          { value: '12', text: 'Puzzle' },
+          { value: '13', text: 'Strategy' },
+          { value: '14', text: 'Fantasy' },
+          { value: '15', text: 'Civilization'},
+        ],
       erroresValidacion: false,
     };
   },
@@ -125,4 +136,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+.select{
+  margin-left: 25px;
+  width: 300px;
+  height: 35px;
+  border-radius: 3px;
+  border-color: gray;
+}
+
+</style>

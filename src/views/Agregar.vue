@@ -1,6 +1,8 @@
 <template>
     <div>
         <h1>Agregar boardgame</h1>
+        <br>
+        <hr>
         <form @submit.prevent="guardarBoardGame()">
             <Input
                 v-model="boardgame.Name"
@@ -24,17 +26,15 @@
                 :error="erroresValidacion && !validacionNombre"
             />
 
-            <Input
-                v-model="boardgame.Category"
-                titulo="Categoría"
-                class="mx-4"
-                id="nombre"
-                type="text"
-                placeholder="Ingrese la categoría."
-                :maxlength="2"
-                mensajeError="Es necesario ingresar una categoría"
-                :error="erroresValidacion && !validacionNombre"
-            />
+            <div class="mx-4">Categoría <strong>{{ selected }}</strong></div>
+              <b-form-select 
+              v-model="boardgame.Category" 
+              :options="options" 
+              required
+              class="select"
+              mensajeError="Es necesario ingresar una categoría"
+              :error="erroresValidacion && !validacionNombre">
+              </b-form-select>
 
             <Input
                 v-model="boardgame.Description"
@@ -49,12 +49,15 @@
                 titulo="Año"
                 class="mx-4"
                 id="Year"
-                type="numeric"
+                type="number"
+                pattern="[0-9]"
                 placeholder="Ingrese el año de lanzamiento."
                 :maxlength="4"
+
             />
 
              <b-button type="submit" variant="primary" class="m-4">Guardar</b-button>
+        <hr>
         </form>
 
     </div>
@@ -76,14 +79,26 @@ export default {
         Description:"",
         Year:"",
       },
+      selected: null,
+        options: [
+          { value: null, text: 'Seleccionar categoría' },
+          { value: '11', text: 'Adventure' },
+          { value: '12', text: 'Puzzle' },
+          { value: '13', text: 'Strategy' },
+          { value: '14', text: 'Fantasy' },
+          { value: '15', text: 'Civilization'},
+        ],
       erroresValidacion: false,
     };
+        
   },
   computed: {
+
     validacionNombre() {
       return (this.boardgame.Name !== undefined && this.boardgame.Name.trim() !== "");
     },
   },
+
   methods:{
       
     ...mapActions(["setBoardGame"]),
@@ -133,6 +148,17 @@ export default {
 
 <style>
 
+.select{
+  margin-left: 25px;
+  width: 300px;
+  height: 35px;
+  border-radius: 3px;
+  border-color: gray;
+}
+
+div{
+  margin: 5px 0 10px 0
+}
 h1{
     text-align: center;
 }

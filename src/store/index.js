@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     boardgames:[],
     boardgame: {},
-    loading:false
+    loading:false,
+    favorites:[],
   },
   mutations: {
     SET_BOARDGAMES(state, boardgames){
@@ -19,7 +20,11 @@ export default new Vuex.Store({
     },
     SET_BOARDGAME(state, boardgame) {
       state.boardgame = boardgame;
+    },
+    SET_FAVORITES(state, favorites) {
+      state.favorites = favorites;
     }
+
   },
   actions: {
     list({commit}){
@@ -50,7 +55,24 @@ export default new Vuex.Store({
       axios.delete(`http://localhost:3000/boardgame/${id}`)
       .then(onComplete)
       .catch(onError);
-    }
+    },
+    setFavorites({commit},{params, onComplete, onError}){
+      axios.post('http://localhost:3000/favorites', params)
+      .then(onComplete)
+      .catch(onError);
+    },
+    listFavorites({commit}){
+      commit('SET_FAVORITES', true);
+      axios.get('http://localhost:3000/favorites')
+      .then(res => commit('SET_FAVORITES', res.data))
+      .finally(() =>  commit('SET_LOADING', false));
+    },
+
+    deleteFavorites({commit}, {id, onComplete, onError}){
+      axios.delete(`http://localhost:3000/favorites/${id}`)
+      .then(onComplete)
+      .catch(onError);
+    },
   },
   modules: {
   }
